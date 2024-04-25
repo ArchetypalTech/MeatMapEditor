@@ -13,14 +13,18 @@ In terms of mapping we use a few chars to represent areas:
 
 * `.` - a null space, essentially just grid filler
 * `p` - a path
-* `<` - a door leading east
-* `>` - a door leading west
-* `^` - a door north
-* `v` - a door south
-* `o` - an area/room/cave etc i.e. a place with stuff that you can move through
+* `-` - a door leading east
+* `-` - a door leading west
+* `|` - a door north
+* `|` - a door south
+* `o` - an area/room/cave etc i.e. a place with stuff that you can move through.
 
-this "map" being bounded and 2d allows for a later config file to reference a grid ref and then 
+This "map" being bounded and 2d allows for a later config file to reference a grid ref and then 
 allow for adding of objects, descriptions etc.
+
+We probably only go to 16*16 in terms of max map size. probably. 
+
+Probable base sizes are `4*4` `8*8`, and `16*16`. 
 
 This might actually be done in this utility albeit its not needed and of course this can all be 
 accomplished by just writing the correct format `GodBabble`. 
