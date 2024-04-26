@@ -1,4 +1,5 @@
 use std::io;
+use color_eyre::owo_colors::colors::Default;
 
 use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
@@ -9,10 +10,39 @@ use ratatui::{
 
 mod tui;
 
+/*
+*  Holds the state of the application and is updated in between
+*  each render cycle. Used to build up the map array that then
+*  is turned into yml.
+*  Valid chars are: ['.', 'o', 'x', '-', '|']
+*  There is no logical difference between a 'o', 'x' char as they denote
+*  respectively a room and a path, logically both have exits and objects i.e.
+*  they are the same thing, but it seems that conceptually when drawing a map
+*  this separation might well be useful.
+*
+ */
 #[derive(Debug, Default)]
 pub struct App {
-    counter: u8,
+    current_screen: CurrentScreen::Config,
+    key_input: String::new(),
+    current_cell: Pos::Default(),
+    allowed_chars: vec!['.', 'x', 'o', '-', '|'],
     exit: bool,
+}
+
+#[derive(Debug)]
+pub enum CurrentScreen {
+    #[default]
+    Config,
+    Main,
+    Editing,
+    Exiting,
+}
+
+#[derive(Debug, Default)]
+pub struct Pos {
+    x_pos: u8,
+    y_pos: u8,
 }
 
 fn main() -> io::Result<()> {
@@ -57,6 +87,8 @@ impl Widget for &App {
 }
 
 impl App {
+
+
     /// runs the application's main loop until the user quits
     pub fn run(&mut self, terminal: &mut tui::Tui) -> io::Result<()> {
         while !self.exit {
