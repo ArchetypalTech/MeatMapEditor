@@ -53,7 +53,7 @@ fn run_app<B: Backend>(
         terminal.draw(|f| ui(f, app))?;
 
         if let Event::Key(key) = event::read()? {
-            dbg!(key.code)
+            // dbg!(key.code)
         }
 
         if let Event::Key(key) = event::read()? {
@@ -96,40 +96,21 @@ fn run_app<B: Backend>(
                 CurrentScreen::Editing if key.kind == KeyEventKind::Press => {
                     match key.code {
                         KeyCode::Enter => {
-                            app.save_key_value();
-                            app.current_screen =
-                                CurrentScreen::Main;
-                        }
-                        KeyCode::Backspace => {
-                            if let Some(editing) = &app.currently_editing {
-                                match editing {
-                                    CurrentlyEditing::Key => {
-                                        app.key_input.pop();
-                                    }
-                                    CurrentlyEditing::Value => {
-                                        app.value_input.pop();
-                                    }
-                                }
-                            }
+                            // app.save_key_value();
+                            // app.current_screen =
+                            //     CurrentScreen::Main;
                         }
                         KeyCode::Esc => {
                             app.current_screen = CurrentScreen::Main;
-                            app.currently_editing = None;
                         }
                         KeyCode::Tab => {
-                            app.toggle_editing();
+                            // app.toggle_editing();
                         }
                         KeyCode::Char(value) => {
-                            if let Some(editing) = &app.currently_editing {
-                                match editing {
-                                    CurrentlyEditing::Key => {
-                                        app.key_input.push(value);
-                                    }
-                                    CurrentlyEditing::Value => {
-                                        app.value_input.push(value);
-                                    }
-                                }
-                            }
+                           if app.ap_chars.contains(&value) {
+                               println!("HOORAH!!!");
+                               app.key_input = value;
+                           }
                         }
                         _ => {}
                     }

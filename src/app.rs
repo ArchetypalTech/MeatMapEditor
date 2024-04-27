@@ -1,7 +1,3 @@
-use std::io;
-use crossterm::event;
-use crossterm::event::{Event, KeyCode, KeyEvent, KeyEventKind};
-use crate::app;
 
 /*
 *  Holds the state of the application and is updated in between
@@ -14,16 +10,17 @@ use crate::app;
 *  this separation might well be useful.
 *
  */
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct App {
-    pub(crate) current_screen: CurrentScreen::Config,
-    key_input: String::new(),
-    current_cell: Pos::Default(),
-    map_chars: vec!['.', 'x', 'o', '-', '|'],
-    exit: bool,
+    pub(crate) current_screen: CurrentScreen,
+    pub(crate) key_input: char,
+    pub(crate) ap_chars: Vec<char>,
+    pub(crate) exit: bool,
+    pub(crate) current_cell: Cell,
 }
 
-#[derive(Debug)]
+
+#[derive(Debug, Default)]
 pub enum CurrentScreen {
     #[default]
     Config,
@@ -40,35 +37,27 @@ pub struct Pos {
 
 #[derive(Debug, Default)]
 pub struct Cell {
-    coord: Pos::Default(),
-    value: String::new()
+    coord: Pos,
+    value: char,
 }
 
-impl App {
-
-    pub fn save_key_value(&mut self) {
-        self.key_input = String::new();
-    }
-
-    fn handle_key_event(&mut self, key_event: KeyEvent) {
-        print!("Handle key event.... APP");
-        match key_event.code {
-            KeyCode::Char('q') => self.exit(),
-            KeyCode::Left => self.decrement_counter(),
-            KeyCode::Right => self.increment_counter(),
-            _ => {}
+// impl Default for Cell {
+//     fn default() -> Self {
+//         Self {
+//             coord: Pos::default(),
+//             value: '\u{00B7}', //middle dot
+//         }
+//     }
+//
+// }
+impl Default for App {
+    fn default() -> Self {
+        Self {
+            current_screen: CurrentScreen::default(),  // Uses the default from the enum
+            key_input: '\0',                          // Default to a null character
+            current_cell: Cell::default(),            // Uses the manually implemented default
+            ap_chars: Vec::new(),                     // Default to an empty vector
+            exit: false,                              // Default to false
         }
-    }
-
-    fn handle_events(&mut self) -> io::Result<()> {
-        match event::read()? {
-            // it's important to check that the event is a key press event as
-            // crossterm also emits key release and repeat events on Windows.
-            Event::Key(key_event) if key_event.kind == KeyEventKind::Press => {
-                self.handle_key_event(key_event)
-            }
-            _ => {}
-        };
-        Ok(())
     }
 }
