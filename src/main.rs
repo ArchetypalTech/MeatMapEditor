@@ -51,21 +51,11 @@ fn run_app<B: Backend>(
     terminal: &mut Terminal<B>,
     app: &mut App,
 ) -> io::Result<bool> {
-    println!("RUN->");
     loop {
         terminal.draw(|f| ui(f, app))?;
 
-        if let Event::Key(key) = event::read()? {
-            // dbg!(key.code)
-        }
-
-        if let Event::Key(key) = event::read()? {
-            if key.kind == event::KeyEventKind::Release {
-                // Skip events that are not KeyEventKind::Press
-                continue;
-            }
-        }
-
+        // start to handle key press events
+        // TODO add an exit key press response here
         if let Event::Key(key) = event::read()? {
             if key.kind == event::KeyEventKind::Release {
                 // Skip events that are not KeyEventKind::Press
