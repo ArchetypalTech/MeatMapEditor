@@ -8,7 +8,10 @@ use ratatui::Terminal;
 
 // grab our App mod via the standard way, so its just named app and in the same hierarchy I guess
 mod app;
+mod ui;
+
 use app::*;
+use crate::ui::ui;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // setup terminal
@@ -73,6 +76,7 @@ fn run_app<B: Backend>(
                     KeyCode::Char('c') => {
                         app.current_screen = CurrentScreen::Config;
                     }
+                    _ => {}
                 }
                 CurrentScreen::Main => match key.code {
                     KeyCode::Char('m') => {

@@ -19,7 +19,6 @@ pub struct App {
     pub(crate) current_cell: Cell,
 }
 
-
 #[derive(Debug, Default)]
 pub enum CurrentScreen {
     #[default]
@@ -41,15 +40,6 @@ pub struct Cell {
     value: char,
 }
 
-// impl Default for Cell {
-//     fn default() -> Self {
-//         Self {
-//             coord: Pos::default(),
-//             value: '\u{00B7}', //middle dot
-//         }
-//     }
-//
-// }
 impl Default for App {
     fn default() -> Self {
         Self {
