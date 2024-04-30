@@ -1,4 +1,4 @@
-# Project Geographiser
+# Project Geographical
 
 A `TUI` (Terminal User Interface) written in RUST for level editing/map creation.
 
