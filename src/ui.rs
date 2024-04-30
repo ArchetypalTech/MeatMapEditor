@@ -41,13 +41,20 @@ pub fn ui(f: &mut Frame, app: &App) {
             .to_owned(),
         // A white divider bar to separate the two sections
         Span::styled(" | ", Style::default().fg(Color::White)),
-        // The final section of the text, with hints on what the user is editing
-        {
-            Span::styled(
-                "Not Editing Anything",
-                Style::default().fg(Color::DarkGray),
-            )
-        },
+        match app.current_screen {
+            CurrentScreen::Main => {
+                Span::styled("Normal XX Mode", Style::default().fg(Color::Green))
+            }
+            CurrentScreen::Config => {
+                Span::styled("Config XX Mode", Style::default().fg(Color::Green))
+            }
+            CurrentScreen::Editing => {
+                Span::styled("Editing XX Mode", Style::default().fg(Color::Yellow))
+            }
+            CurrentScreen::Exiting => {
+                Span::styled("Exiting XX", Style::default().fg(Color::LightRed))
+            }
+        }
     ];
 
     let mode_footer = Paragraph::new(Line::from(current_navigation_text))
@@ -73,9 +80,19 @@ pub fn ui(f: &mut Frame, app: &App) {
             ),
         }
     };
+
+    let key_notes_footer = Paragraph::new(Line::from(current_keys_hint))
+        .block(Block::default().borders(Borders::ALL));
+
+    let footer_split = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .split(v_layout[2]);
     
     f.render_widget(title, v_layout[0]);
     f.render_widget(Span::raw("This should be a grid..."), v_layout[1]);
+    f.render_widget(mode_footer, footer_split[0]);
+    f.render_widget(key_notes_footer, footer_split[1]);
 }
 
 /// helper function to create a centered rect using up certain percentage of the available rect `r`
