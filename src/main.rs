@@ -66,6 +66,9 @@ fn run_app<B: Backend>(
                     KeyCode::Char('c') => {
                         app.current_screen = CurrentScreen::Config;
                     }
+                    KeyCode::Char('q') => {
+                        app.current_screen = CurrentScreen::Exiting;
+                    }
                     _ => {}
                 }
                 CurrentScreen::Main => match key.code {
@@ -99,6 +102,9 @@ fn run_app<B: Backend>(
                         }
                         KeyCode::Tab => {
                             // app.toggle_editing();
+                        }
+                        KeyCode::Char('q') => {
+                            app.current_screen = CurrentScreen::Exiting;
                         }
                         KeyCode::Char(value) => {
                            if app.ap_chars.contains(&value) {

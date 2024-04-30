@@ -1,5 +1,5 @@
 use ratatui::{prelude::*, widgets::*};
-use crate::app::App;
+use crate::app::{App, CurrentScreen};
 
 pub fn ui(f: &mut Frame, app: &App) {
 
@@ -17,11 +17,63 @@ pub fn ui(f: &mut Frame, app: &App) {
         .style(Style::default());
 
     let title = Paragraph::new(Text::styled(
-        "GTAFk Economy General Map Device n23",
+        "GTAEFk Economy General Map Device n23",
         Style::default().fg(Color::Green),
     ))
         .block(title_block);
 
+    let current_navigation_text = vec![
+        // The first half of the text
+        match app.current_screen {
+            CurrentScreen::Main => {
+                Span::styled("Normal Mode", Style::default().fg(Color::Green))
+            }
+            CurrentScreen::Config => {
+                Span::styled("Config Mode", Style::default().fg(Color::Green))
+            }
+            CurrentScreen::Editing => {
+                Span::styled("Editing Mode", Style::default().fg(Color::Yellow))
+            }
+            CurrentScreen::Exiting => {
+                Span::styled("Exiting", Style::default().fg(Color::LightRed))
+            }
+        }
+            .to_owned(),
+        // A white divider bar to separate the two sections
+        Span::styled(" | ", Style::default().fg(Color::White)),
+        // The final section of the text, with hints on what the user is editing
+        {
+            Span::styled(
+                "Not Editing Anything",
+                Style::default().fg(Color::DarkGray),
+            )
+        },
+    ];
+
+    let mode_footer = Paragraph::new(Line::from(current_navigation_text))
+        .block(Block::default().borders(Borders::ALL));
+
+    let current_keys_hint = {
+        match app.current_screen {
+            CurrentScreen::Main => Span::styled(
+                "(q) to quit",
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Config => Span::styled(
+                "(q) to quit",
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Editing => Span::styled(
+                "(ESC) to cancel/(Tab) to switch boxes/enter to complete",
+                Style::default().fg(Color::Red),
+            ),
+            CurrentScreen::Exiting => Span::styled(
+                "(q) to quit",
+                Style::default().fg(Color::Red),
+            ),
+        }
+    };
+    
     f.render_widget(title, v_layout[0]);
     f.render_widget(Span::raw("This should be a grid..."), v_layout[1]);
 }
