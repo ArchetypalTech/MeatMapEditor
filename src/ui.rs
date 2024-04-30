@@ -1,6 +1,20 @@
 use ratatui::{prelude::*, widgets::*};
 use crate::app::{App, CurrentScreen};
 
+fn gen_title() -> ratatui::widgets::Paragraph<'static> {
+    let title_block  = Block::default()
+        .borders(Borders::ALL)
+        .style(Style::default());
+
+    let title = Paragraph::new(Text::styled(
+        "GTAEFk Economy General Map Device n23",
+        Style::default().fg(Color::Green),
+    ))
+        .block(title_block);
+
+    title
+}
+
 pub fn ui(f: &mut Frame, app: &App) {
 
     let v_layout = Layout::default()
@@ -12,30 +26,36 @@ pub fn ui(f: &mut Frame, app: &App) {
         ])
         .split(f.size());
 
-    let title_block = Block::default()
-        .borders(Borders::ALL)
-        .style(Style::default());
+    // let title_block: Block = Block::default()
+    //     .borders(Borders::ALL)
+    //     .style(Style::default());
+    //
+    // let title: Paragraph = Paragraph::new(Text::styled(
+    //     "GTAEFk Economy General Map Device n23",
+    //     Style::default().fg(Color::Green),
+    // ))
+    //     .block(title_block);
 
-    let title = Paragraph::new(Text::styled(
-        "GTAEFk Economy General Map Device n23",
-        Style::default().fg(Color::Green),
-    ))
-        .block(title_block);
-
-    let current_navigation_text = vec![
+    let current_navigation_text: Vec<Span> = vec![
         // The first half of the text
         match app.current_screen {
             CurrentScreen::Main => {
-                Span::styled("Normal Mode", Style::default().fg(Color::Green))
+                Span::styled("Mode: Map Display", Style::default().fg(Color::Green))
             }
             CurrentScreen::Config => {
-                Span::styled("Config Mode", Style::default().fg(Color::Green))
+                Span::styled("Mode: Map Configuration", Style::default().fg(Color::Green))
             }
-            CurrentScreen::Editing => {
-                Span::styled("Editing Mode", Style::default().fg(Color::Yellow))
+            CurrentScreen::Edit => {
+                Span::styled("Mode: Map Edit", Style::default().fg(Color::Yellow))
             }
-            CurrentScreen::Exiting => {
-                Span::styled("Exiting", Style::default().fg(Color::LightRed))
+            CurrentScreen::Exit => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
+            }
+            CurrentScreen::Start => {
+                Span::styled("Mode: Start", Style::default().fg(Color::LightRed))
+            }
+            CurrentScreen::Loader => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
             }
         }
             .to_owned(),
@@ -43,16 +63,22 @@ pub fn ui(f: &mut Frame, app: &App) {
         Span::styled(" | ", Style::default().fg(Color::White)),
         match app.current_screen {
             CurrentScreen::Main => {
-                Span::styled("Normal XX Mode", Style::default().fg(Color::Green))
+                Span::styled("Mode: Map Display", Style::default().fg(Color::Green))
             }
             CurrentScreen::Config => {
-                Span::styled("Config XX Mode", Style::default().fg(Color::Green))
+                Span::styled("Mode: Map Configuration", Style::default().fg(Color::Green))
             }
-            CurrentScreen::Editing => {
-                Span::styled("Editing XX Mode", Style::default().fg(Color::Yellow))
+            CurrentScreen::Edit => {
+                Span::styled("Mode: Map Edit", Style::default().fg(Color::Yellow))
             }
-            CurrentScreen::Exiting => {
-                Span::styled("Exiting XX", Style::default().fg(Color::LightRed))
+            CurrentScreen::Exit => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
+            }
+            CurrentScreen::Start => {
+                Span::styled("Keys: Start", Style::default().fg(Color::LightRed))
+            }
+            CurrentScreen::Loader => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
             }
         }
     ];
@@ -62,22 +88,24 @@ pub fn ui(f: &mut Frame, app: &App) {
 
     let current_keys_hint = {
         match app.current_screen {
-            CurrentScreen::Main => Span::styled(
-                "(q) to quit",
-                Style::default().fg(Color::Red),
-            ),
-            CurrentScreen::Config => Span::styled(
-                "(q) to quit",
-                Style::default().fg(Color::Red),
-            ),
-            CurrentScreen::Editing => Span::styled(
-                "(ESC) to cancel/(Tab) to switch boxes/enter to complete",
-                Style::default().fg(Color::Red),
-            ),
-            CurrentScreen::Exiting => Span::styled(
-                "(q) to quit",
-                Style::default().fg(Color::Red),
-            ),
+            CurrentScreen::Main => {
+                Span::styled("Keys: Map Display", Style::default().fg(Color::Green))
+            }
+            CurrentScreen::Config => {
+                Span::styled("Keys: Map Configuration", Style::default().fg(Color::Green))
+            }
+            CurrentScreen::Edit => {
+                Span::styled("Keys: Map Edit", Style::default().fg(Color::Yellow))
+            }
+            CurrentScreen::Exit => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
+            }
+            CurrentScreen::Start => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
+            }
+            CurrentScreen::Loader => {
+                Span::styled("Mode: Save", Style::default().fg(Color::LightRed))
+            }
         }
     };
 
@@ -89,7 +117,7 @@ pub fn ui(f: &mut Frame, app: &App) {
         .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
         .split(v_layout[2]);
     
-    f.render_widget(title, v_layout[0]);
+    f.render_widget(gen_title(), v_layout[0]);
     f.render_widget(Span::raw("This should be a grid..."), v_layout[1]);
     f.render_widget(mode_footer, footer_split[0]);
     f.render_widget(key_notes_footer, footer_split[1]);

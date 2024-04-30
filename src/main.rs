@@ -67,7 +67,7 @@ fn run_app<B: Backend>(
                         app.current_screen = CurrentScreen::Config;
                     }
                     KeyCode::Char('q') => {
-                        app.current_screen = CurrentScreen::Exiting;
+                        app.current_screen = CurrentScreen::Exit;
                     }
                     _ => {}
                 }
@@ -77,11 +77,11 @@ fn run_app<B: Backend>(
                         // app.currently_editing = Some(CurrentlyEditing::Key);
                     }
                     KeyCode::Char('q') => {
-                        app.current_screen = CurrentScreen::Exiting;
+                        app.current_screen = CurrentScreen::Exit;
                     }
                     _ => {}
                 },
-                CurrentScreen::Exiting => match key.code {
+                CurrentScreen::Exit => match key.code {
                     KeyCode::Char('y') => {
                         return Ok(true);
                     }
@@ -90,7 +90,7 @@ fn run_app<B: Backend>(
                     }
                     _ => {}
                 },
-                CurrentScreen::Editing if key.kind == KeyEventKind::Press => {
+                CurrentScreen::Edit if key.kind == KeyEventKind::Press => {
                     match key.code {
                         KeyCode::Enter => {
                             // app.save_key_value();
@@ -104,7 +104,7 @@ fn run_app<B: Backend>(
                             // app.toggle_editing();
                         }
                         KeyCode::Char('q') => {
-                            app.current_screen = CurrentScreen::Exiting;
+                            app.current_screen = CurrentScreen::Exit;
                         }
                         KeyCode::Char(value) => {
                            if app.ap_chars.contains(&value) {

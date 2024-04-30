@@ -21,11 +21,13 @@ pub struct App {
 
 #[derive(Debug, Default)]
 pub enum CurrentScreen {
-    #[default]
     Config,
     Main,
-    Editing,
-    Exiting,
+    Edit,
+    #[default]
+    Start,
+    Loader,
+    Exit,
 }
 
 #[derive(Debug, Default)]
