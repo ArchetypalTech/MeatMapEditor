@@ -1,3 +1,4 @@
+use std::rc::Rc;
 use ratatui::{prelude::*, widgets::*};
 use crate::app::{App, CurrentScreen};
 
@@ -11,13 +12,12 @@ fn gen_title() -> ratatui::widgets::Paragraph<'static> {
         Style::default().fg(Color::Green),
     ))
         .block(title_block);
-
     title
 }
 
-pub fn ui(f: &mut Frame, app: &App) {
 
-    let v_layout = Layout::default()
+fn gen_v_layout(f: &mut Frame) -> Rc<[Rect]> {
+    let layouts =Layout::default()
         .direction(Direction::Vertical)
         .constraints([
             Constraint::Length(3),
@@ -25,16 +25,12 @@ pub fn ui(f: &mut Frame, app: &App) {
             Constraint::Length(3),
         ])
         .split(f.size());
+    layouts
+}
 
-    // let title_block: Block = Block::default()
-    //     .borders(Borders::ALL)
-    //     .style(Style::default());
-    //
-    // let title: Paragraph = Paragraph::new(Text::styled(
-    //     "GTAEFk Economy General Map Device n23",
-    //     Style::default().fg(Color::Green),
-    // ))
-    //     .block(title_block);
+pub fn ui(f: &mut Frame, app: &App) {
+
+    let v_layout = gen_v_layout(f);
 
     let current_navigation_text: Vec<Span> = vec![
         // The first half of the text
