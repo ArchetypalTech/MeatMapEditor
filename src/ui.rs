@@ -16,7 +16,7 @@ fn gen_title() -> ratatui::widgets::Paragraph<'static> {
 }
 
 
-fn gen_v_layout(f: &mut Frame) -> Rc<[Rect]> {
+fn v_layout_3_split(f: &mut Frame) -> Rc<[Rect]> {
     let layouts =Layout::default()
         .direction(Direction::Vertical)
         .constraints([
@@ -30,7 +30,7 @@ fn gen_v_layout(f: &mut Frame) -> Rc<[Rect]> {
 
 pub fn ui(f: &mut Frame, app: &App) {
 
-    let v_layout = gen_v_layout(f);
+    let v_layout = v_layout_3_split(f);
 
     let current_navigation_text: Vec<Span> = vec![
         // The first half of the text

@@ -47,6 +47,21 @@ fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/*
+    Handle events for the START screen
+ */
+fn handle_start_screen(app: &mut App) {
+    if let Ok(Event::Key(key)) = event::read() {
+        match key.code {
+            KeyCode::Char('q') => {
+                app.current_screen = CurrentScreen::Exit;
+            }
+            _ => {}
+        }
+    }
+}
+
+
 fn run_app<B: Backend>(
     terminal: &mut Terminal<B>,
     app: &mut App,
@@ -62,6 +77,9 @@ fn run_app<B: Backend>(
                 continue;
             }
             match app.current_screen {
+                CurrentScreen::Start => {
+                    handle_start_screen(app);
+                }
                 CurrentScreen::Config => match key.code {
                     KeyCode::Char('c') => {
                         app.current_screen = CurrentScreen::Config;
