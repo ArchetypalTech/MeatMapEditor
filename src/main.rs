@@ -9,12 +9,17 @@ use ratatui::Terminal;
 // grab our App mod via the standard way, so its just named app and in the same hierarchy I guess
 mod app;
 mod ui;
+mod args;
 
 use app::*;
 use crate::ui::ui;
-
+use args::PrayArgs;
+use clap::Parser;
 fn main() -> Result<(), Box<dyn Error>> {
     // setup terminal
+
+    let appArgs = PrayArgs::parse;
+
     enable_raw_mode()?;
     let mut stderr = io::stderr(); // This is a special case. Normally using stdout is fine
     execute!(stderr, EnterAlternateScreen, EnableMouseCapture)?;
